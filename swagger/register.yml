@@ -5,19 +5,19 @@ parameters:
     in: formData
     type: string
     required: true
-    description: Username
+    description: Choose your username
   - name: email
     in: formData
     type: string
     required: true
-    description: Email
+    description: Choose your email
   - name: password
     in: formData
     type: string
     required: true
-    description: Password
+    description: Choose your password
 responses:
   200:
     description: User registered successfully
   500:
-    description: Error registering user
+    description: Error login user

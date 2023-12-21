@@ -1,0 +1,16 @@
+Get informations user.
+---
+parameters:
+  - name: email
+    in: formData
+    type: string
+    description: Select your email
+  - name: password
+    in: formData
+    type: string
+    description: Write your password
+responses:
+  200:
+    description: User registered successfully
+  500:
+    description: Error registering user
