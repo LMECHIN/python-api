@@ -13,10 +13,12 @@ def login():
     if request.headers['Content-Type'] == 'application/json':
         data = request.json
         email = data.get("email")
+        username = data.get("username")
         password = data.get("password")
     else:
         data = request.form
         email = data.get("email")
+        username = data.get("username")
         password = data.get("password")
 
     cursor = None
@@ -29,10 +31,14 @@ def login():
         user = cursor.fetchone()
 
         if user:
-            response = {"message": "Login successful"}
+            if username is None:
+                username = user[3]
+
             token = generate_token()
             print(token)
-            authenticated_users[token] = {"email": email, "password": password}
+            authenticated_users[token] = {"username": username, "email": email, "password": password}
+
+            response = {"token": token, "message": "Login successful"}
             return jsonify(response)
         else:
             response = {"error": "Invalid email or password"}

@@ -11,6 +11,7 @@ def user():
     user_data = authenticated_users.get(token)
     email = user_data.get("email")
     password = user_data.get("password")
-    response = {"email": email, "password": password}
+    username = user_data.get("username")
+    response = {"email": email, "password": password, "username": username}
 
     return jsonify(response)
