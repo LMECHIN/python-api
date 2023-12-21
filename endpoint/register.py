@@ -9,7 +9,7 @@ db = connect_db.db()
 @app.route("/api/register", methods=["POST"])
 @swag_from("../swagger/register.yml")
 def register():
-    if request.headers['Content-Type'] == 'application/json':
+    if request.headers["Content-Type"] == "application/json":
         data = request.json
         name = data.get("username")
         email = data.get("email")

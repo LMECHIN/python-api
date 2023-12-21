@@ -4,6 +4,7 @@ import os
 
 load_dotenv()
 
+
 def db():
     db_config = {
         "host": os.getenv("HOST"),

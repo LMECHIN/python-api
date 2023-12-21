@@ -6,11 +6,12 @@ import connect_db
 
 db = connect_db.db()
 
+
 @app.route("/api/login", methods=["POST"])
 @swag_from("../swagger/login.yml")
 def login():
     global token
-    if request.headers['Content-Type'] == 'application/json':
+    if request.headers["Content-Type"] == "application/json":
         data = request.json
         email = data.get("email")
         username = data.get("username")
@@ -36,7 +37,11 @@ def login():
 
             token = generate_token()
             print(token)
-            authenticated_users[token] = {"username": username, "email": email, "password": password}
+            authenticated_users[token] = {
+                "username": username,
+                "email": email,
+                "password": password,
+            }
 
             response = {"token": token, "message": "Login successful"}
             return jsonify(response)

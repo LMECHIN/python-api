@@ -7,7 +7,11 @@ CORS(app)
 app.config["SWAGGER"] = {"title": "My API", "uiversion": 3}
 template = {
     "swagger": "2.0",
-    "info": {"title": "PYTHON API", "description": "API for my data", "version": "0.0.1"},
+    "info": {
+        "title": "PYTHON API",
+        "description": "API for my data",
+        "version": "0.0.1",
+    },
     # "host": "http://127.0.0.1:5000",
 }
 
