@@ -20,6 +20,11 @@ def register():
         email = data.get("email")
         password = data.get("password")
 
+    if not name or not email or not password:
+        error_message = "Please provide values for username, email, and password."
+        response = {"error": error_message}
+        return jsonify(response), 400
+
     cursor = None
 
     try:

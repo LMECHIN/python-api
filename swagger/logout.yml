@@ -1,0 +1,16 @@
+Disconnect with a actual user.
+---
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Authentication token
+
+responses:
+  200:
+    description: Logout successful
+  401:
+    description: Unauthorized - Invalid token or missing token
+  500:
+    description: Internal Server Error

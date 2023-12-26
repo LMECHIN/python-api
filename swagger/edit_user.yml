@@ -1,0 +1,32 @@
+Edit user account
+---
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Authentication token
+  - name: new_username
+    in: formData
+    type: string
+    required: true
+    description: New username for the user
+  - name: new_email
+    in: formData
+    type: string
+    required: true
+    description: New email for the user
+  - name: new_password
+    in: formData
+    type: string
+    required: true
+    description: New password for the user
+responses:
+  200:
+    description: User data updated successfully
+  400:
+    description: Bad request - No new data provided for update
+  401:
+    description: Unauthorized - Invalid token
+  500:
+    description: Internal Server Error

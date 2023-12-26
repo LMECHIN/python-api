@@ -1,7 +1,24 @@
 from flask import request, jsonify
 from flasgger import swag_from
 from swagger.config import app
-from token_api import authenticated_users, requires_auth
+from token_api import authenticated_users
+
+
+def requires_auth(func):
+    def wrapper(*args, **kwargs):
+        auth_header = request.headers.get("Authorization")
+        if not auth_header or "Bearer" not in auth_header:
+            return jsonify({"error": "Unauthorized"}), 401
+
+        token = auth_header.split(" ")[1]
+        user = authenticated_users.get(token)
+
+        if not user:
+            return jsonify({"error": "Invalid token"}), 401
+
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 @app.route("/api/user", methods=["GET"])

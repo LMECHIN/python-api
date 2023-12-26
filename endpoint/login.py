@@ -26,14 +26,32 @@ def login():
 
     try:
         cursor = db.cursor()
-        query = "SELECT * FROM user WHERE email = %s AND password = %s;"
-        values = (email, password)
-        cursor.execute(query, values)
+
+        update_query = "UPDATE user SET email = %s, password = %s, username = %s WHERE username = %s;"
+        update_values = (email, password, username, username)
+        cursor.execute(update_query, update_values)
+        db.commit()
+
+        select_query = "SELECT * FROM user WHERE email = %s AND password = %s;"
+        select_values = (email, password)
+        cursor.execute(select_query, select_values)
         user = cursor.fetchone()
 
         if user:
             if username is None:
                 username = user[3]
+
+            existing_token = next(
+                (
+                    token
+                    for token, user_data in authenticated_users.items()
+                    if user_data["email"] == email
+                ),
+                None,
+            )
+
+            if existing_token:
+                del authenticated_users[existing_token]
 
             token = generate_token()
             print(token)
