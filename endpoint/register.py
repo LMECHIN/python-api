@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from flasgger import swag_from
 from swagger.config import app
+from token_api import generate_token, authenticated_users
 import connect_db
 
 db = connect_db.db()
@@ -33,7 +34,27 @@ def register():
         values = (email, password, name)
         cursor.execute(query, values)
         db.commit()
-        response = {"message": "User registered successfully"}
+        existing_token = next(
+            (
+                token
+                for token, user_data in authenticated_users.items()
+                if user_data["email"] == email
+            ),
+            None,
+        )
+
+        if existing_token:
+            del authenticated_users[existing_token]
+
+        token = generate_token()
+        print(token)
+        authenticated_users[token] = {
+            "username": name,
+            "email": email,
+            "password": password,
+        }
+
+        response = {"token": token, "message": "User registered successfully"}
 
         return jsonify(response)
 
