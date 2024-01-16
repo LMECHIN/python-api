@@ -1,16 +1,25 @@
 Get informations user.
 ---
 parameters:
-  - name: email
-    in: formData
+  - name: Authorization
+    in: header
     type: string
-    description: Select your email
-  - name: password
-    in: formData
-    type: string
-    description: Write your password
+    required: true
+    default: "Bearer "
+    description: Authentication token
 responses:
   200:
-    description: User registered successfully
+    description: User information retrieved successfully
+    schema:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        username:
+          type: string
+  401:
+    description: Unauthorized - Invalid token or missing token
   500:
-    description: Error registering user
+    description: Internal Server Error

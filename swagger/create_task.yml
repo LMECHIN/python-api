@@ -1,0 +1,49 @@
+Create new task.
+---
+parameters:
+  - name: title
+    in: formData
+    type: string
+    required: true
+    description: Title of the task
+  - name: description
+    in: formData
+    type: string
+    required: false
+    description: Description of the task
+  - name: due_date
+    in: formData
+    type: string
+    format: date
+    required: false
+    description: Due date of the task (YYYY-MM-DD format)
+  - name: status
+    in: formData
+    type: string
+    enum: ["To Do", "In Progress", "Done"]
+    required: false
+    default: "To Do"
+    description: Status of the task
+  - name: priority
+    in: formData
+    type: string
+    enum: ["Low", "Medium", "High"]
+    required: false
+    default: "Medium"
+    description: Priority of the task
+responses:
+  200:
+    description: Task created successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Success message
+        task_id:
+          type: integer
+          description: ID of the created task
+  400:
+    description: Bad request, missing required parameters or invalid data
+  500:
+    description: Error creating task

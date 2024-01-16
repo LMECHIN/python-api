@@ -1,10 +1,11 @@
 from flask import request, jsonify
 from flasgger import swag_from
 from swagger.config import app
-from token_api import authenticated_users
 import connect_db
 
 db = connect_db.db()
+
+authenticated_users = {}
 
 
 @app.route("/api/edit_user", methods=["POST"])

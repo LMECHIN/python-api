@@ -1,0 +1,49 @@
+get_task.yml
+---
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    default: "Bearer "
+    description: Authentication token
+responses:
+  200:
+    description: Task information retrieved successfully
+    schema:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              task_id:
+                type: integer
+                description: ID of the task
+              title:
+                type: string
+                description: Title of the task
+              description:
+                type: string
+                description: Description of the task
+              due_date:
+                type: string
+                format: date
+                description: Due date of the task
+              status:
+                type: string
+                description: Status of the task
+              priority:
+                type: string
+                description: Priority of the task
+              created_at:
+                type: string
+                format: date-time
+                description: Creation timestamp of the task
+              updated_at:
+                type: string
+                format: date-time
+                description: Last update timestamp of the task
+  500:
+    description: Error retrieving task information
