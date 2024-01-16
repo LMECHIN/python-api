@@ -6,6 +6,7 @@ import connect_db
 
 db = connect_db.db()
 
+
 def requires_auth(func):
     def my_wrapper(*args, **kwargs):
         auth_header = request.headers.get("Authorization")
@@ -21,6 +22,7 @@ def requires_auth(func):
         return func(*args, **kwargs)
 
     return my_wrapper
+
 
 # Utilisation de la syntaxe alternative pour ajouter des décorateurs
 @app.route("/api/get_task", methods=["GET"])
