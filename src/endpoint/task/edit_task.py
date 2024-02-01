@@ -29,15 +29,18 @@ def edit_task():
     try:
         cursor = db.cursor()
 
-        # Récupérer les valeurs actuelles de la tâche
         cursor.execute("SELECT * FROM tasks WHERE user_id = %s;", (user_id,))
         task_data = cursor.fetchone()
         if not task_data:
             response = {"error": "Task not found"}
             return jsonify(response), 404
 
-        # Extraire les valeurs actuelles de la tâche
-        title, description, status, priority = task_data[2], task_data[3], task_data[5], task_data[6]
+        title, description, status, priority = (
+            task_data[2],
+            task_data[3],
+            task_data[5],
+            task_data[6],
+        )
 
         print(title)
         print(description)
