@@ -30,6 +30,8 @@ def routes():
         "swagger_create_task": os.getenv("SWAGGER_CREATE_TASK"),
         "endpoint_delete_task": os.getenv("ENDPOINT_DELETE_TASK"),
         "swagger_delete_task": os.getenv("SWAGGER_DELETE_TASK"),
+        "endpoint_edit_task": os.getenv("ENDPOINT_EDIT_TASK"),
+        "swagger_edit_task": os.getenv("SWAGGER_EDIT_TASK"),
         "endpoint_get_task": os.getenv("ENDPOINT_GET_TASK"),
         "swagger_get_task": os.getenv("SWAGGER_GET_TASK"),
         "endpoint_delete_user": os.getenv("ENDPOINT_DELETE_USER"),

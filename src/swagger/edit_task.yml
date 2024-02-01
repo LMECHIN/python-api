@@ -1,0 +1,47 @@
+Edit task
+---
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    default: "Bearer "
+    description: Authentication token
+  - name: task_id
+    in: formData
+    type: string
+    required: true
+    description: task ID of the task
+  - name: new_title
+    in: formData
+    type: string
+    required: true
+    description: New title of the task
+  - name: new_description
+    in: formData
+    type: string
+    required: true
+    description: New description of the task
+  - name: new_status
+    in: formData
+    type: string
+    enum: ["To Do", "In Progress", "Done"]
+    required: false
+    default: "To Do"
+    description: New status of the task
+  - name: new_priority
+    in: formData
+    type: string
+    enum: ["Low", "Medium", "High"]
+    required: false
+    default: "Medium"
+    description: New priority of the task
+responses:
+  200:
+    description: Task data updated successfully
+  400:
+    description: Bad request - No new data provided for update
+  401:
+    description: Unauthorized - Invalid token
+  500:
+    description: Internal Server Error

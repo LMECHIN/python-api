@@ -10,6 +10,7 @@ from src.endpoint.user.delete_user import delete_user
 from src.endpoint.task.get_task import get_task
 from src.endpoint.task.create_task import create_task
 from src.endpoint.task.delete_task import delete_task
+from src.endpoint.task.edit_task import edit_task
 
 login
 logout
@@ -20,6 +21,7 @@ delete_user
 get_task
 create_task
 delete_task
+edit_task
 
 if __name__ == "__main__":
     app.run(debug=True)
