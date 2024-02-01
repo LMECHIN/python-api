@@ -1,14 +1,16 @@
 from flask import request, jsonify
 from flasgger import swag_from
-from swagger.config import app
-from token_api import generate_token, authenticated_users
-import connect_db
+from src.swagger.config import app
+from src.authenticate.auth import authenticated_users
+from src.authenticate.token_api import generate_token
+import src.authenticate.connect_db as connect_db
 
 db = connect_db.db()
+routes = connect_db.routes()
 
 
-@app.route("/api/register", methods=["POST"])
-@swag_from("../swagger/register.yml")
+@app.route(routes["endpoint_register"], methods=["POST"])
+@swag_from(routes["swagger_register"])
 def register():
     if request.headers["Content-Type"] == "application/json":
         data = request.json

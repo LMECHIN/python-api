@@ -1,4 +1,4 @@
-SRC	=	main.py
+SRC	=	src/main.py
 
 NAME = server-api
 

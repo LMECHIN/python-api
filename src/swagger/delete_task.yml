@@ -1,0 +1,26 @@
+Delete with a actual task
+---
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    default: "Bearer "
+    description: Authentication token
+  - name: user_id
+    in: formData
+    type: string
+    required: true
+    description: User ID of the task
+  - name: task_id
+    in: formData
+    type: string
+    required: true
+    description: task ID of the task
+responses:
+  200:
+    description: Task deleted successfully
+  401:
+    description: Unauthorized - Invalid token or missing token
+  500:
+    description: Internal Server Error

@@ -1,28 +1,32 @@
-from flask import request, jsonify
+from flask import request, jsonify, g
 from flasgger import swag_from
-from swagger.config import app
-import connect_db
+from src.swagger.config import app
+from src.authenticate.auth import requires_auth
+import src.authenticate.connect_db as connect_db
 
 db = connect_db.db()
+routes = connect_db.routes()
 
 
-@app.route("/api/create_task", methods=["POST"])
-@swag_from("../swagger/create_task.yml")
+@swag_from(routes["swagger_create_task"])
+@requires_auth
 def create_task():
+    user_id = g.user.get("id")
+
     if request.headers["Content-Type"] == "application/json":
         data = request.json
         title = data.get("title")
         description = data.get("description")
         due_date = data.get("due_date")
-        status = data.get("status", "To Do")  # Default to "To Do" if not provided
-        priority = data.get("priority", "Medium")  # Default to "Medium" if not provided
+        status = data.get("status", "To Do")
+        priority = data.get("priority", "Medium")
     else:
         data = request.form
         title = data.get("title")
         description = data.get("description")
         due_date = data.get("due_date")
-        status = data.get("status", "To Do")  # Default to "To Do" if not provided
-        priority = data.get("priority", "Medium")  # Default to "Medium" if not provided
+        status = data.get("status", "To Do")
+        priority = data.get("priority", "Medium")
 
     if not title:
         error_message = "Please provide a title for the task."
@@ -34,14 +38,14 @@ def create_task():
     try:
         cursor = db.cursor()
         query = """
-            INSERT INTO tasks (title, description, due_date, status, priority)
-            VALUES (%s, %s, %s, %s, %s);
+            INSERT INTO tasks (user_id, title, description, due_date, status, priority)
+            VALUES (%s, %s, %s, %s, %s, %s);
         """
-        values = (title, description, due_date, status, priority)
+        values = (user_id, title, description, due_date, status, priority)
         cursor.execute(query, values)
         db.commit()
 
-        task_id = cursor.lastrowid  # Get the ID of the newly inserted task
+        task_id = cursor.lastrowid
         response = {"message": "Task created successfully", "task_id": task_id}
 
         return jsonify(response)
@@ -54,3 +58,6 @@ def create_task():
     finally:
         if cursor is not None:
             cursor.close()
+
+
+app.add_url_rule(routes["endpoint_create_task"], "create_task", create_task, methods=["POST"])

@@ -1,23 +1,27 @@
-from flask import request, jsonify
+from flask import request, jsonify, g
 from flasgger import swag_from
-from swagger.config import app
-from token_api import generate_token, authenticated_users
-import connect_db
+from src.swagger.config import app
+from src.authenticate.auth import authenticated_users
+from src.authenticate.token_api import generate_token
+import src.authenticate.connect_db as connect_db
 
 db = connect_db.db()
+routes = connect_db.routes()
 
 
-@app.route("/api/login", methods=["POST"])
-@swag_from("../swagger/login.yml")
+@app.route(routes["endpoint_login"], methods=["POST"])
+@swag_from(routes["swagger_login"])
 def login():
     global token
     if request.headers["Content-Type"] == "application/json":
         data = request.json
+        id = data.get("id")
         email = data.get("email")
         username = data.get("username")
         password = data.get("password")
     else:
         data = request.form
+        id = data.get("id")
         email = data.get("email")
         username = data.get("username")
         password = data.get("password")
@@ -27,8 +31,8 @@ def login():
     try:
         cursor = db.cursor()
 
-        update_query = "UPDATE user SET email = %s, password = %s, username = %s WHERE username = %s;"
-        update_values = (email, password, username, username)
+        update_query = "UPDATE user SET id = %s, email = %s, password = %s, username = %s WHERE username = %s;"
+        update_values = (id, email, password, username, username)
         cursor.execute(update_query, update_values)
         db.commit()
 
@@ -40,6 +44,9 @@ def login():
         if user:
             if username is None:
                 username = user[3]
+
+            if id is None:
+                id = user[0]
 
             existing_token = next(
                 (
@@ -53,13 +60,15 @@ def login():
             if existing_token:
                 del authenticated_users[existing_token]
 
-            token = generate_token()
-            print(token)
-            authenticated_users[token] = {
+            g.user = {
+                "id": id,
                 "username": username,
                 "email": email,
                 "password": password,
             }
+
+            token = generate_token()
+            authenticated_users[token] = g.user
 
             response = {"token": token, "message": "Login successful"}
             return jsonify(response)

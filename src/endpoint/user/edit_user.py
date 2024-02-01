@@ -1,16 +1,16 @@
 from flask import request, jsonify
 from flasgger import swag_from
-from swagger.config import app
-from token_api import authenticated_users
-import connect_db
+from src.swagger.config import app
+from src.authenticate.auth import authenticated_users
+import src.authenticate.connect_db as connect_db
 
 db = connect_db.db()
+routes = connect_db.routes()
 
 
-@app.route("/api/edit_user", methods=["POST"])
-@swag_from("../swagger/edit_user.yml")
+@app.route(routes["endpoint_edit_user"], methods=["POST"])
+@swag_from(routes["swagger_edit_user"])
 def edit_user():
-    print(request.headers)
     try:
         token = request.headers.get("Authorization")
 

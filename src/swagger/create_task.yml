@@ -1,6 +1,17 @@
 Create new task.
 ---
 parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    default: "Bearer "
+    description: Authentication token
+  - name: user_id
+    in: formData
+    type: string
+    required: true
+    description: User ID of the task
   - name: title
     in: formData
     type: string
