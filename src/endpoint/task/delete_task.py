@@ -43,4 +43,6 @@ def delete_task():
         cursor.close()
 
 
-app.add_url_rule(routes["endpoint_delete_task"], "delete_task", delete_task, methods=["DELETE"])
+app.add_url_rule(
+    routes["endpoint_delete_task"], "delete_task", delete_task, methods=["DELETE"]
+)

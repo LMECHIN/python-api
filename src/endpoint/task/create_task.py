@@ -60,4 +60,6 @@ def create_task():
             cursor.close()
 
 
-app.add_url_rule(routes["endpoint_create_task"], "create_task", create_task, methods=["POST"])
+app.add_url_rule(
+    routes["endpoint_create_task"], "create_task", create_task, methods=["POST"]
+)
